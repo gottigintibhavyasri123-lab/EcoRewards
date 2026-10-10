@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EcoRewards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Sans+Malayalam:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&display=swap">
+<style>
+/* Layout: a single phone-sized app centred on a brown backdrop; full screen on small devices.
+   Palette: brown and white only. Type: Bricolage Grotesque for display, DM Sans for text, Noto for Indic/Arabic scripts. */
+:root{
+  --b900:#2b190d; --b800:#41271a; --b700:#5c3924; --b600:#7a4d31; --b400:#a77858; --b200:#dac3af; --b100:#eee1d5; --b50:#f8f2ec; --white:#fffefd;
+  --display:'Bricolage Grotesque','Noto Sans Devanagari','Noto Sans Telugu','Noto Sans Tamil','Noto Sans Kannada','Noto Sans Malayalam','Noto Sans Bengali','Noto Sans Arabic',system-ui,sans-serif;
+  --text:'DM Sans','Noto Sans Devanagari','Noto Sans Telugu','Noto Sans Tamil','Noto Sans Kannada','Noto Sans Malayalam','Noto Sans Bengali','Noto Sans Arabic',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--b800);color:var(--b900);font-family:var(--text);font-size:14px;line-height:1.45;padding-inline:16px;padding-block:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--b400);outline-offset:2px}
+.stage{height:100%;display:flex;justify-content:center;align-items:center;gap:40px}
+.intro{max-width:300px;color:var(--b100);display:none}
+.intro h1{font-family:var(--display);font-size:40px;line-height:1.05;margin:0 0 12px;color:var(--white)}
+.intro p{margin:0 0 10px;color:var(--b200)}
+@media(min-width:900px){.intro{display:block}}
+.phone{width:100%;max-width:400px;height:100%;max-height:820px;background:var(--white);border-radius:32px;display:flex;flex-direction:column;overflow:hidden;position:relative;box-shadow:0 0 0 8px var(--b900),0 30px 60px rgba(0,0,0,.35)}
+@media(max-width:480px){body{padding:0}.phone{max-height:none;border-radius:0;box-shadow:none}}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px 10px;background:var(--b700);color:var(--white)}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:20px}
+.brand svg{width:26px;height:26px}
+.langbtn{display:flex;align-items:center;gap:6px;background:var(--b600);border:1px solid var(--b400);color:var(--white);border-radius:999px;padding:6px 12px;font-weight:500}
+.langbtn svg{width:16px;height:16px}
+main{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px;background:var(--white)}
+nav{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--b200);background:var(--white);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{border:0;background:none;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:500;color:var(--b400)}
+nav button svg{width:22px;height:22px}
+nav button[aria-current="page"]{color:var(--b700);font-weight:700}
+nav button[aria-current="page"] svg{stroke-width:2.4}
+h2{font-family:var(--display);font-size:20px;margin:0;line-height:1.15;text-wrap:balance}
+h3{margin:0;font-size:15px}
+.sm{font-size:12px;color:var(--b600)}
+.hero{background:var(--b700);color:var(--white);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.hero .tag{font-size:13px;color:var(--b200)}
+.pts{display:flex;align-items:baseline;gap:8px}
+.pts b{font-family:var(--display);font-size:48px;line-height:1;font-variant-numeric:tabular-nums}
+.pts span{color:var(--b200);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{background:var(--b800);border-radius:12px;padding:8px 10px}
+.stats b{display:block;font-size:17px;font-variant-numeric:tabular-nums}
+.stats span{font-size:11px;color:var(--b200)}
+.trust{border:1.5px solid var(--b200);border-radius:16px;padding:14px;display:flex;gap:12px;background:var(--b50)}
+.trust svg{width:34px;height:34px;flex:none;color:var(--b700)}
+.trust p{margin:4px 0 8px;color:var(--b700)}
+.link{background:none;border:0;padding:0;color:var(--b700);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0;padding:0;list-style:none}
+.steps li{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-size:11.5px;font-weight:500}
+.steps i{width:44px;height:44px;border-radius:50%;background:var(--b100);display:grid;place-items:center;color:var(--b700)}
+.steps svg{width:22px;height:22px}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:12px;border:1px solid var(--b200);border-radius:14px;padding:12px;background:var(--white)}
+.row .grow{flex:1;min-width:0}
+.row .grow div{overflow-wrap:anywhere}
+.thumb{width:48px;height:48px;border-radius:10px;background:var(--b100);flex:none;display:grid;place-items:center;color:var(--b700)}
+.thumb svg{width:24px;height:24px}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:700;background:var(--b700);color:var(--white)}
+.btn:hover{background:var(--b800)}
+.btn.ghost{background:var(--white);color:var(--b700);border:1.5px solid var(--b700)}
+.btn.small{padding:7px 12px;font-size:13px}
+.btn:disabled{background:var(--b100);color:var(--b400);cursor:not-allowed;border:0}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700;background:var(--b100);color:var(--b700)}
+.pill svg{width:12px;height:12px}
+.pill.dark{background:var(--b700);color:var(--white)}
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drop{aspect-ratio:1;border:2px dashed var(--b400);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;background:var(--b50);position:relative;overflow:hidden;padding:8px}
+.drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.drop .lab{position:absolute;left:8px;bottom:8px;background:var(--b900);color:var(--white);border-radius:8px;padding:2px 8px;font-size:11px;font-weight:700}
+.drop svg{width:28px;height:28px;color:var(--b600)}
+.drop.off{opacity:.45}
+.safety{border-radius:14px;background:var(--b100);padding:12px;display:flex;gap:10px;align-items:flex-start}
+.safety svg{width:22px;height:22px;flex:none;color:var(--b700)}
+.safety p{margin:2px 0 0;color:var(--b700)}
+label.chk{display:flex;gap:10px;align-items:flex-start;font-weight:500}
+label.chk input{width:20px;height:20px;accent-color:var(--b700);flex:none;margin:0}
+.checks{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.checks li{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--b50);border:1px solid var(--b200);color:var(--b600)}
+.checks li svg{width:20px;height:20px;flex:none}
+.checks li.done{color:var(--b900);background:var(--white)}
+.checks li.run svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.win{text-align:center;background:var(--b700);color:var(--white);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:6px;align-items:center}
+.win b{font-family:var(--display);font-size:40px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.chip{border:1.5px solid var(--b200);background:var(--white);border-radius:999px;padding:6px 12px;white-space:nowrap;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--b700);color:var(--white);border-color:var(--b700)}
+.map{border-radius:16px;border:1px solid var(--b200);background:var(--b50);width:100%;display:block}
+.sheetbg{position:absolute;inset:0;background:rgba(43,25,13,.55);display:flex;align-items:flex-end;z-index:9}
+.sheet{background:var(--white);width:100%;max-height:80%;overflow-y:auto;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.sheet .top{display:flex;justify-content:space-between;align-items:center}
+.x{border:0;background:var(--b100);width:34px;height:34px;border-radius:50%;font-size:18px;line-height:1}
+.langs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.langs button{border:1.5px solid var(--b200);background:var(--white);border-radius:12px;padding:10px;text-align:start;display:flex;flex-direction:column}
+.langs button[aria-pressed="true"]{border-color:var(--b700);background:var(--b100)}
+.langs small{color:var(--b600)}
+.code{font-family:var(--display);font-size:26px;letter-spacing:.12em;text-align:center;border:2px dashed var(--b400);border-radius:14px;padding:14px;background:var(--b50)}
+.toast{position:absolute;left:16px;right:16px;bottom:78px;background:var(--b900);color:var(--white);border-radius:12px;padding:10px 14px;z-index:6;font-weight:500}
+.note{font-size:11.5px;color:var(--b600);text-align:center}
+.splash{position:absolute;inset:0;z-index:8;background:var(--b700);color:var(--white);display:flex;flex-direction:column;padding:24px 22px calc(24px + env(safe-area-inset-bottom,0px));gap:16px}
+.splash h1{font-family:var(--display);font-size:34px;line-height:1.05;margin:0;text-wrap:balance}
+.splash .art{flex:1;min-height:0;display:grid;place-items:center;background:var(--white);border-radius:28px;padding:16px}
+.splash .art svg{height:100%;max-height:300px;width:auto;max-width:90%}
+.splash .brand{font-size:22px}
+.btn.light{background:var(--white);color:var(--b800)}
+.btn.light:hover{background:var(--b100)}
+.progress{height:10px;border-radius:999px;background:var(--b100);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--b700);border-radius:999px}
+.ptsys{border:1.5px solid var(--b200);border-radius:20px;padding:14px 14px 14px;display:flex;flex-direction:column;gap:2px}
+.ptsys .row{border:0;border-bottom:1px solid var(--b200);border-radius:0;padding:12px 0}
+.ptsys .v{font-family:var(--display);font-size:20px;font-weight:800;color:var(--b700);white-space:nowrap}
+.ptsys .foot{display:flex;flex-direction:column;gap:6px;padding-top:12px}
+.rbanner{background:var(--b700);color:var(--white);border-radius:20px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+@media(prefers-reduced-motion:reduce){.checks li.run svg{animation:none}}
+</style>
+<style>img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="intro">
+    <h1>EcoRewards</h1>
+    <p id="introTag"></p>
+    <p>Interactive prototype. Try the full flow: pick a spot, add a before photo, clean, add an after photo, and watch it get verified.</p>
+    <p>Switch the language, browse partner rewards and find municipal offices near you.</p>
+  </div>
+  <div class="phone" id="phone">
+    <header>
+      <div class="brand">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#fffefd"/><path d="M8 21c0-7 5-12 15-12 0 9-4 14-11 14-1.6 0-3-.5-4-2z" fill="#5c3924"/><path d="M9 24c3-5 6-8 10-10" stroke="#fffefd" stroke-width="1.6" stroke-linecap="round"/></svg>
+        EcoRewards
+      </div>
+      <button class="langbtn" id="langBtn" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>
+        <span id="langLabel">English</span>
+      </button>
+    </header>
+    <main id="main"></main>
+    <nav id="nav" aria-label="Main"></nav>
+    <div id="splash"></div>
+    <div id="overlay"></div>
+    <div id="toast" class="toast" hidden></div>
+  </div>
+</div>
+
+<script>
+const LANGS=[
+ ['en','English','English'],['hi','हिन्दी','Hindi'],['te','తెలుగు','Telugu'],['ta','தமிழ்','Tamil'],['kn','ಕನ್ನಡ','Kannada'],['ml','മലയാളം','Malayalam'],['bn','বাংলা','Bengali'],['es','Español','Spanish'],['fr','Français','French'],['ar','العربية','Arabic'],
+ ['mr','मराठी','Marathi'],['gu','ગુજરાતી','Gujarati'],['pa','ਪੰਜਾਬੀ','Punjabi'],['or','ଓଡ଼ିଆ','Odia'],['ur','اردو','Urdu'],['as','অসমীয়া','Assamese'],['ne','नेपाली','Nepali'],['zh','中文','Chinese'],['ja','日本語','Japanese'],['ko','한국어','Korean'],['pt','Português','Portuguese'],['de','Deutsch','German'],['ru','Русский','Russian'],['id','Bahasa Indonesia','Indonesian']
+];
+const RTL=['ar','ur'];
+const K=['tagline','home','report','rewards','offices','welcome','points','impact','spots','kg','verified','trustTitle','trustBody','howVerified','s1','s2','s3','s4','nearby','start','before','after','addPhoto','submit','safety','safetyText','ack','redeem','partner','nearOffices','call','directions','language','sample','approved','cost','locked','yourCode','close','open','closed','away','getStarted','pointsSystem','pSpot','pSpotSub','pFive','pFiveSub','pCoupon','pCouponSub','toCoupon','redeemTitle','splashTitle'];
+const T={
+en:['Do good for the planet. Get rewarded for your impact.','Home','Clean','Rewards','Offices','Welcome back','EcoPoints','Your impact','Spots cleaned','kg cleared','Verified','Every cleanup is checked','Photos are matched by place and time, then reviewed by a municipal volunteer before any points are given.','How we verify','Photo the waste','Clean safely','Upload after photo','Earn EcoPoints','Dumping spots near you','Start cleanup','Before photo','After photo','Add photo','Submit for verification','Safety first','Clean only small, dry litter. Wear gloves. Never touch glass, needles, medical or chemical waste. Report those to the municipal office instead.','I will wear gloves and skip hazardous waste','Redeem','Verified partner','Nearby municipal offices','Call','Directions','Language','Sample data for this prototype. The live app reads your municipal directory.','Approved! EcoPoints added.','pts','Need more points','Your coupon code','Close','Open','Closed','away'],
+hi:['धरती के लिए अच्छा करें। अपने योगदान का इनाम पाएं।','होम','सफाई','इनाम','कार्यालय','वापसी पर स्वागत है','इकोपॉइंट्स','आपका प्रभाव','साफ किए स्थान','किलो कचरा हटाया','सत्यापित','हर सफाई की जांच होती है','फोटो को स्थान और समय से मिलाया जाता है, फिर पॉइंट देने से पहले नगर निगम का स्वयंसेवक समीक्षा करता है।','हम कैसे जांचते हैं','कचरे की फोटो लें','सुरक्षित सफाई करें','बाद की फोटो डालें','इकोपॉइंट्स कमाएं','आपके पास कचरे के स्थान','सफाई शुरू करें','पहले की फोटो','बाद की फोटो','फोटो जोड़ें','जांच के लिए भेजें','पहले सुरक्षा','सिर्फ छोटा, सूखा कचरा उठाएं। दस्ताने पहनें। कांच, सुई, मेडिकल या रासायनिक कचरे को न छुएं। इसकी सूचना नगर कार्यालय को दें।','मैं दस्ताने पहनूंगा/पहनूंगी और खतरनाक कचरा छोड़ दूंगा/दूंगी','रिडीम करें','सत्यापित पार्टनर','पास के नगर कार्यालय','कॉल करें','रास्ता','भाषा','यह प्रोटोटाइप का नमूना डेटा है। असली ऐप आपकी नगर निर्देशिका से जुड़ेगा।','मंजूर! इकोपॉइंट्स जुड़ गए।','पॉइंट','और पॉइंट चाहिए','आपका कूपन कोड','बंद करें','खुला','बंद','दूर'],
+te:['భూమికి మంచి చేయండి. మీ కృషికి బహుమతి పొందండి.','హోమ్','శుభ్రత','బహుమతులు','కార్యాలయాలు','మళ్లీ స్వాగతం','ఈకోపాయింట్లు','మీ ప్రభావం','శుభ్రం చేసిన ప్రదేశాలు','కిలోల చెత్త తొలగింపు','ధృవీకరించబడింది','ప్రతి శుభ్రతను తనిఖీ చేస్తాం','ఫోటోలను ప్రదేశం, సమయంతో సరిపోల్చి, పాయింట్లు ఇచ్చే ముందు మున్సిపల్ వాలంటీర్ సమీక్షిస్తారు.','మేము ఎలా ధృవీకరిస్తాం','చెత్త ఫోటో తీయండి','సురక్షితంగా శుభ్రం చేయండి','తర్వాత ఫోటో అప్‌లోడ్ చేయండి','ఈకోపాయింట్లు సంపాదించండి','మీ దగ్గర చెత్త ప్రదేశాలు','శుభ్రత ప్రారంభించండి','ముందు ఫోటో','తర్వాత ఫోటో','ఫోటో జోడించండి','ధృవీకరణకు పంపండి','ముందు భద్రత','చిన్న, పొడి చెత్తను మాత్రమే తీయండి. చేతి తొడుగులు ధరించండి. గాజు, సూదులు, వైద్య లేదా రసాయన చెత్తను ముట్టుకోవద్దు. వాటిని మున్సిపల్ కార్యాలయానికి తెలపండి.','నేను చేతి తొడుగులు ధరిస్తాను, ప్రమాదకర చెత్తను వదిలేస్తాను','రిడీమ్','ధృవీకరించిన భాగస్వామి','దగ్గరలోని మున్సిపల్ కార్యాలయాలు','కాల్','దారి','భాష','ఇది ప్రోటోటైప్ నమూనా డేటా. అసలు యాప్ మీ మున్సిపల్ డైరెక్టరీ నుండి తీసుకుంటుంది.','ఆమోదించబడింది! ఈకోపాయింట్లు చేరాయి.','పాయింట్లు','ఇంకా పాయింట్లు కావాలి','మీ కూపన్ కోడ్','మూసివేయి','తెరిచి ఉంది','మూసి ఉంది','దూరం'],
+ta:['பூமிக்கு நன்மை செய்யுங்கள். உங்கள் பங்களிப்புக்கு பரிசு பெறுங்கள்.','முகப்பு','சுத்தம்','பரிசுகள்','அலுவலகங்கள்','மீண்டும் வருக','ஈகோபாயிண்ட்ஸ்','உங்கள் தாக்கம்','சுத்தம் செய்த இடங்கள்','கிலோ அகற்றம்','சரிபார்க்கப்பட்டது','ஒவ்வொரு சுத்தமும் சரிபார்க்கப்படும்','புகைப்படங்கள் இடம், நேரத்துடன் ஒப்பிடப்பட்டு, புள்ளிகள் வழங்கும் முன் நகராட்சி தன்னார்வலர் ஆய்வு செய்வார்.','நாங்கள் எப்படி சரிபார்க்கிறோம்','குப்பையை படம் எடுங்கள்','பாதுகாப்பாக சுத்தம் செய்யுங்கள்','பிந்தைய படத்தை பதிவேற்றுங்கள்','ஈகோபாயிண்ட்ஸ் பெறுங்கள்','உங்கள் அருகிலுள்ள குப்பை இடங்கள்','சுத்தம் தொடங்கு','முந்தைய படம்','பிந்தைய படம்','படம் சேர்','சரிபார்ப்புக்கு அனுப்பு','முதலில் பாதுகாப்பு','சிறிய, உலர்ந்த குப்பையை மட்டும் எடுங்கள். கையுறை அணியுங்கள். கண்ணாடி, ஊசி, மருத்துவ அல்லது ரசாயனக் கழிவைத் தொடாதீர்கள். அவற்றை நகராட்சி அலுவலகத்திற்குத் தெரிவியுங்கள்.','நான் கையுறை அணிவேன், ஆபத்தான கழிவை தவிர்ப்பேன்','மீட்டெடு','சரிபார்க்கப்பட்ட பங்குதாரர்','அருகிலுள்ள நகராட்சி அலுவலகங்கள்','அழை','வழி','மொழி','இது முன்மாதிரிக்கான மாதிரி தரவு. உண்மையான செயலி உங்கள் நகராட்சி பட்டியலைப் பயன்படுத்தும்.','அங்கீகரிக்கப்பட்டது! புள்ளிகள் சேர்ந்தன.','புள்ளி','மேலும் புள்ளிகள் தேவை','உங்கள் கூப்பன் குறியீடு','மூடு','திறந்துள்ளது','மூடப்பட்டது','தொலைவு'],
+kn:['ಭೂಮಿಗೆ ಒಳ್ಳೆಯದನ್ನು ಮಾಡಿ. ನಿಮ್ಮ ಕೊಡುಗೆಗೆ ಬಹುಮಾನ ಪಡೆಯಿರಿ.','ಮುಖಪುಟ','ಸ್ವಚ್ಛತೆ','ಬಹುಮಾನಗಳು','ಕಚೇರಿಗಳು','ಮತ್ತೆ ಸ್ವಾಗತ','ಇಕೋಪಾಯಿಂಟ್ಸ್','ನಿಮ್ಮ ಪ್ರಭಾವ','ಸ್ವಚ್ಛಗೊಳಿಸಿದ ಸ್ಥಳಗಳು','ಕೆಜಿ ತೆರವು','ಪರಿಶೀಲಿತ','ಪ್ರತಿ ಸ್ವಚ್ಛತೆಯನ್ನೂ ಪರಿಶೀಲಿಸಲಾಗುತ್ತದೆ','ಫೋಟೋಗಳನ್ನು ಸ್ಥಳ ಮತ್ತು ಸಮಯದೊಂದಿಗೆ ಹೊಂದಿಸಿ, ಪಾಯಿಂಟ್ ನೀಡುವ ಮೊದಲು ನಗರಪಾಲಿಕೆ ಸ್ವಯಂಸೇವಕರು ಪರಿಶೀಲಿಸುತ್ತಾರೆ.','ನಾವು ಹೇಗೆ ಪರಿಶೀಲಿಸುತ್ತೇವೆ','ಕಸದ ಫೋಟೋ ತೆಗೆಯಿರಿ','ಸುರಕ್ಷಿತವಾಗಿ ಸ್ವಚ್ಛಗೊಳಿಸಿ','ನಂತರದ ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ','ಇಕೋಪಾಯಿಂಟ್ಸ್ ಗಳಿಸಿ','ನಿಮ್ಮ ಹತ್ತಿರದ ಕಸದ ಸ್ಥಳಗಳು','ಸ್ವಚ್ಛತೆ ಆರಂಭಿಸಿ','ಮೊದಲಿನ ಫೋಟೋ','ನಂತರದ ಫೋಟೋ','ಫೋಟೋ ಸೇರಿಸಿ','ಪರಿಶೀಲನೆಗೆ ಕಳುಹಿಸಿ','ಮೊದಲು ಸುರಕ್ಷತೆ','ಚಿಕ್ಕ, ಒಣ ಕಸವನ್ನು ಮಾತ್ರ ಎತ್ತಿ. ಕೈಗವಸು ಧರಿಸಿ. ಗಾಜು, ಸೂಜಿ, ವೈದ್ಯಕೀಯ ಅಥವಾ ರಾಸಾಯನಿಕ ಕಸವನ್ನು ಮುಟ್ಟಬೇಡಿ. ಅವನ್ನು ನಗರಪಾಲಿಕೆ ಕಚೇರಿಗೆ ತಿಳಿಸಿ.','ನಾನು ಕೈಗವಸು ಧರಿಸುತ್ತೇನೆ, ಅಪಾಯಕಾರಿ ಕಸ ಬಿಡುತ್ತೇನೆ','ರಿಡೀಮ್','ಪರಿಶೀಲಿತ ಪಾಲುದಾರ','ಹತ್ತಿರದ ನಗರಪಾಲಿಕೆ ಕಚೇರಿಗಳು','ಕರೆ','ದಾರಿ','ಭಾಷೆ','ಇದು ಪ್ರೋಟೋಟೈಪ್‌ನ ಮಾದರಿ ಡೇಟಾ. ನಿಜವಾದ ಆ್ಯಪ್ ನಿಮ್ಮ ನಗರಪಾಲಿಕೆ ಪಟ್ಟಿಯನ್ನು ಬಳಸುತ್ತದೆ.','ಅನುಮೋದಿಸಲಾಗಿದೆ! ಪಾಯಿಂಟ್ಸ್ ಸೇರಿದೆ.','ಪಾಯಿಂಟ್','ಇನ್ನಷ್ಟು ಪಾಯಿಂಟ್ ಬೇಕು','ನಿಮ್ಮ ಕೂಪನ್ ಕೋಡ್','ಮುಚ್ಚಿ','ತೆರೆದಿದೆ','ಮುಚ್ಚಿದೆ','ದೂರ'],
+ml:['ഭൂമിക്ക് നന്മ ചെയ്യൂ. നിങ്ങളുടെ പങ്കിന് സമ്മാനം നേടൂ.','ഹോം','ശുചീകരണം','സമ്മാനങ്ങൾ','ഓഫീസുകൾ','വീണ്ടും സ്വാഗതം','ഇക്കോപോയിന്റ്സ്','നിങ്ങളുടെ സ്വാധീനം','വൃത്തിയാക്കിയ സ്ഥലങ്ങൾ','കിലോ നീക്കം ചെയ്തു','പരിശോധിച്ചത്','ഓരോ ശുചീകരണവും പരിശോധിക്കുന്നു','ഫോട്ടോകൾ സ്ഥലവും സമയവുമായി ഒത്തുനോക്കി, പോയിന്റ് നൽകുംമുമ്പ് നഗരസഭാ വോളണ്ടിയർ പരിശോധിക്കും.','ഞങ്ങൾ എങ്ങനെ പരിശോധിക്കുന്നു','മാലിന്യത്തിന്റെ ഫോട്ടോ എടുക്കൂ','സുരക്ഷിതമായി വൃത്തിയാക്കൂ','ശേഷമുള്ള ഫോട്ടോ അപ്‌ലോഡ് ചെയ്യൂ','ഇക്കോപോയിന്റ്സ് നേടൂ','നിങ്ങളുടെ അടുത്തുള്ള മാലിന്യ സ്ഥലങ്ങൾ','ശുചീകരണം തുടങ്ങൂ','മുമ്പുള്ള ഫോട്ടോ','ശേഷമുള്ള ഫോട്ടോ','ഫോട്ടോ ചേർക്കൂ','പരിശോധനയ്ക്ക് അയയ്ക്കൂ','ആദ്യം സുരക്ഷ','ചെറിയ, ഉണങ്ങിയ മാലിന്യം മാത്രം എടുക്കൂ. കയ്യുറ ധരിക്കൂ. ഗ്ലാസ്, സൂചി, മെഡിക്കൽ, രാസ മാലിന്യം തൊടരുത്. അവ നഗരസഭാ ഓഫീസിൽ അറിയിക്കൂ.','ഞാൻ കയ്യുറ ധരിക്കും, അപകടകരമായ മാലിന്യം ഒഴിവാക്കും','റിഡീം','പരിശോധിച്ച പങ്കാളി','അടുത്തുള്ള നഗരസഭാ ഓഫീസുകൾ','വിളിക്കൂ','വഴി','ഭാഷ','ഇത് പ്രോട്ടോടൈപ്പിനുള്ള മാതൃകാ ഡാറ്റയാണ്. യഥാർത്ഥ ആപ്പ് നിങ്ങളുടെ നഗരസഭാ പട്ടിക ഉപയോഗിക്കും.','അംഗീകരിച്ചു! പോയിന്റ് ചേർത്തു.','പോയിന്റ്','കൂടുതൽ പോയിന്റ് വേണം','നിങ്ങളുടെ കൂപ്പൺ കോഡ്','അടയ്ക്കൂ','തുറന്നിരിക്കുന്നു','അടച്ചിരിക്കുന്നു','അകലെ'],
+bn:['পৃথিবীর জন্য ভালো কাজ করুন। আপনার অবদানের পুরস্কার পান।','হোম','পরিষ্কার','পুরস্কার','অফিস','আবার স্বাগতম','ইকোপয়েন্টস','আপনার প্রভাব','পরিষ্কার করা স্থান','কেজি সরানো হয়েছে','যাচাইকৃত','প্রতিটি পরিচ্ছন্নতা যাচাই হয়','ছবিগুলো স্থান ও সময়ের সঙ্গে মেলানো হয়, তারপর পয়েন্ট দেওয়ার আগে পৌরসভার স্বেচ্ছাসেবক পর্যালোচনা করেন।','আমরা কীভাবে যাচাই করি','আবর্জনার ছবি তুলুন','নিরাপদে পরিষ্কার করুন','পরের ছবি আপলোড করুন','ইকোপয়েন্টস অর্জন করুন','আপনার কাছের আবর্জনার স্থান','পরিষ্কার শুরু করুন','আগের ছবি','পরের ছবি','ছবি যোগ করুন','যাচাইয়ের জন্য জমা দিন','আগে নিরাপত্তা','শুধু ছোট, শুকনো আবর্জনা তুলুন। গ্লাভস পরুন। কাচ, সূচ, চিকিৎসা বা রাসায়নিক বর্জ্য ছোঁবেন না। সেগুলো পৌর অফিসে জানান।','আমি গ্লাভস পরব এবং বিপজ্জনক বর্জ্য এড়িয়ে চলব','রিডিম','যাচাইকৃত অংশীদার','কাছের পৌর অফিস','কল','দিকনির্দেশ','ভাষা','এটি প্রোটোটাইপের নমুনা তথ্য। আসল অ্যাপ আপনার পৌর তালিকা ব্যবহার করবে।','অনুমোদিত! পয়েন্ট যোগ হয়েছে।','পয়েন্ট','আরও পয়েন্ট দরকার','আপনার কুপন কোড','বন্ধ করুন','খোলা','বন্ধ','দূরে'],
+es:['Haz el bien por el planeta. Recibe recompensas por tu impacto.','Inicio','Limpiar','Premios','Oficinas','Bienvenido de nuevo','EcoPuntos','Tu impacto','Puntos limpiados','kg retirados','Verificado','Cada limpieza se comprueba','Las fotos se cotejan por lugar y hora, y un voluntario municipal las revisa antes de dar puntos.','Cómo verificamos','Fotografía los residuos','Limpia con seguridad','Sube la foto de después','Gana EcoPuntos','Basureros cerca de ti','Empezar limpieza','Foto de antes','Foto de después','Añadir foto','Enviar para verificar','Seguridad primero','Recoge solo basura pequeña y seca. Usa guantes. No toques vidrio, agujas ni residuos médicos o químicos. Avisa a la oficina municipal.','Usaré guantes y evitaré residuos peligrosos','Canjear','Socio verificado','Oficinas municipales cercanas','Llamar','Cómo llegar','Idioma','Datos de ejemplo para este prototipo. La app real usa tu directorio municipal.','¡Aprobado! EcoPuntos añadidos.','pts','Faltan puntos','Tu código de cupón','Cerrar','Abierto','Cerrado','de distancia'],
+fr:['Faites du bien à la planète. Soyez récompensé pour votre impact.','Accueil','Nettoyer','Récompenses','Mairies','Bon retour','ÉcoPoints','Votre impact','Lieux nettoyés','kg retirés','Vérifié','Chaque nettoyage est contrôlé','Les photos sont comparées par lieu et heure, puis examinées par un bénévole municipal avant l\'attribution des points.','Notre vérification','Photographiez les déchets','Nettoyez en sécurité','Ajoutez la photo après','Gagnez des ÉcoPoints','Dépôts sauvages près de vous','Commencer','Photo avant','Photo après','Ajouter une photo','Envoyer pour vérification','Sécurité d\'abord','Ramassez seulement de petits déchets secs. Portez des gants. Ne touchez ni verre, ni aiguilles, ni déchets médicaux ou chimiques. Signalez-les à la mairie.','Je porterai des gants et éviterai les déchets dangereux','Échanger','Partenaire vérifié','Services municipaux proches','Appeler','Itinéraire','Langue','Données d\'exemple pour ce prototype. L\'appli réelle utilise l\'annuaire de votre commune.','Approuvé ! ÉcoPoints ajoutés.','pts','Points insuffisants','Votre code promo','Fermer','Ouvert','Fermé','de distance'],
+ar:['افعل الخير للكوكب. واحصل على مكافأة لأثرك.','الرئيسية','تنظيف','المكافآت','المكاتب','مرحبًا بعودتك','نقاط إيكو','أثرك','أماكن تم تنظيفها','كجم تمت إزالتها','موثّق','كل عملية تنظيف يتم التحقق منها','تتم مطابقة الصور بالمكان والوقت، ثم يراجعها متطوع من البلدية قبل منح النقاط.','كيف نتحقق','صوّر النفايات','نظّف بأمان','ارفع صورة ما بعد التنظيف','اكسب نقاط إيكو','أماكن النفايات القريبة منك','ابدأ التنظيف','صورة قبل','صورة بعد','أضف صورة','أرسل للتحقق','السلامة أولًا','التقط النفايات الصغيرة والجافة فقط. ارتدِ قفازات. لا تلمس الزجاج أو الإبر أو النفايات الطبية أو الكيميائية. أبلغ مكتب البلدية عنها.','سأرتدي القفازات وأتجنب النفايات الخطرة','استبدال','شريك موثّق','مكاتب البلدية القريبة','اتصال','الاتجاهات','اللغة','بيانات تجريبية لهذا النموذج. التطبيق الفعلي يستخدم دليل بلديتك.','تمت الموافقة! أُضيفت النقاط.','نقطة','تحتاج نقاطًا أكثر','رمز القسيمة','إغلاق','مفتوح','مغلق','بعيدًا']
+};
+const X={
+en:['Get started','How points work','Clean 1 approved waste spot','Upload before-and-after proof','Complete 5 approved cleanups','Reach your first reward milestone','Unlock a coupon','Choose an available partner offer','pts to your first coupon','Redeem your points','Recycle your waste. Earn rewards.'],
+hi:['शुरू करें','पॉइंट कैसे काम करते हैं','1 मंज़ूर कचरा स्थान साफ करें','पहले और बाद की फोटो का सबूत दें','5 मंज़ूर सफाई पूरी करें','अपना पहला इनाम पड़ाव पाएं','कूपन अनलॉक करें','उपलब्ध पार्टनर ऑफर चुनें','पॉइंट पहले कूपन तक','अपने पॉइंट रिडीम करें','कचरा रीसायकल करें। इनाम पाएं।'],
+te:['ప్రారంభించండి','పాయింట్లు ఎలా పని చేస్తాయి','ఆమోదించిన 1 చెత్త ప్రదేశం శుభ్రం చేయండి','ముందు, తర్వాత ఫోటోల రుజువు ఇవ్వండి','ఆమోదించిన 5 శుభ్రతలు పూర్తి చేయండి','మీ మొదటి బహుమతి మైలురాయి చేరండి','కూపన్ అన్‌లాక్ చేయండి','అందుబాటులో ఉన్న భాగస్వామి ఆఫర్ ఎంచుకోండి','మొదటి కూపన్‌కు పాయింట్లు','మీ పాయింట్లను రిడీమ్ చేయండి','చెత్తను రీసైకిల్ చేయండి. బహుమతులు పొందండి.'],
+ta:['தொடங்குங்கள்','புள்ளிகள் எப்படி செயல்படுகின்றன','அங்கீகரிக்கப்பட்ட 1 குப்பை இடத்தை சுத்தம் செய்யுங்கள்','முன், பின் படங்களின் ஆதாரம் தாருங்கள்','அங்கீகரிக்கப்பட்ட 5 சுத்தங்களை முடியுங்கள்','முதல் பரிசு இலக்கை அடையுங்கள்','கூப்பனை திறக்கவும்','கிடைக்கும் பங்குதாரர் சலுகையைத் தேர்ந்தெடுக்கவும்','முதல் கூப்பனுக்கான புள்ளிகள்','உங்கள் புள்ளிகளை மீட்டெடுங்கள்','குப்பையை மறுசுழற்சி செய்யுங்கள். பரிசுகள் பெறுங்கள்.'],
+kn:['ಆರಂಭಿಸಿ','ಪಾಯಿಂಟ್ ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತವೆ','ಅನುಮೋದಿತ 1 ಕಸದ ಸ್ಥಳ ಸ್ವಚ್ಛಗೊಳಿಸಿ','ಮೊದಲು ಮತ್ತು ನಂತರದ ಫೋಟೋ ಪುರಾವೆ ನೀಡಿ','ಅನುಮೋದಿತ 5 ಸ್ವಚ್ಛತೆ ಪೂರ್ಣಗೊಳಿಸಿ','ಮೊದಲ ಬಹುಮಾನದ ಹಂತ ತಲುಪಿ','ಕೂಪನ್ ಅನ್‌ಲಾಕ್ ಮಾಡಿ','ಲಭ್ಯವಿರುವ ಪಾಲುದಾರ ಆಫರ್ ಆಯ್ಕೆಮಾಡಿ','ಮೊದಲ ಕೂಪನ್‌ಗೆ ಪಾಯಿಂಟ್','ನಿಮ್ಮ ಪಾಯಿಂಟ್ ರಿಡೀಮ್ ಮಾಡಿ','ಕಸ ಮರುಬಳಕೆ ಮಾಡಿ. ಬಹುಮಾನ ಪಡೆಯಿರಿ.'],
+ml:['തുടങ്ങൂ','പോയിന്റ് എങ്ങനെ പ്രവർത്തിക്കുന്നു','അംഗീകരിച്ച 1 മാലിന്യ സ്ഥലം വൃത്തിയാക്കൂ','മുമ്പും ശേഷവുമുള്ള ഫോട്ടോ തെളിവ് നൽകൂ','അംഗീകരിച്ച 5 ശുചീകരണം പൂർത്തിയാക്കൂ','ആദ്യ സമ്മാന നാഴികക്കല്ലിലെത്തൂ','കൂപ്പൺ അൺലോക്ക് ചെയ്യൂ','ലഭ്യമായ പങ്കാളി ഓഫർ തിരഞ്ഞെടുക്കൂ','ആദ്യ കൂപ്പണിലേക്കുള്ള പോയിന്റ്','നിങ്ങളുടെ പോയിന്റ് റിഡീം ചെയ്യൂ','മാലിന്യം പുനരുപയോഗിക്കൂ. സമ്മാനം നേടൂ.'],
+bn:['শুরু করুন','পয়েন্ট কীভাবে কাজ করে','অনুমোদিত ১টি আবর্জনার স্থান পরিষ্কার করুন','আগে ও পরের ছবির প্রমাণ দিন','অনুমোদিত ৫টি পরিচ্ছন্নতা সম্পন্ন করুন','প্রথম পুরস্কারের ধাপে পৌঁছান','কুপন আনলক করুন','উপলব্ধ অংশীদার অফার বেছে নিন','প্রথম কুপনের জন্য পয়েন্ট','আপনার পয়েন্ট রিডিম করুন','বর্জ্য রিসাইকেল করুন। পুরস্কার পান।'],
+es:['Empezar','Cómo funcionan los puntos','Limpia 1 lugar de residuos aprobado','Sube pruebas de antes y después','Completa 5 limpiezas aprobadas','Alcanza tu primer hito de recompensa','Desbloquea un cupón','Elige una oferta de socio disponible','pts para tu primer cupón','Canjea tus puntos','Recicla tus residuos. Gana recompensas.'],
+fr:['Commencer','Comment fonctionnent les points','Nettoyez 1 site approuvé','Envoyez des preuves avant et après','Terminez 5 nettoyages approuvés','Atteignez votre premier palier','Débloquez un bon','Choisissez une offre partenaire','pts pour votre premier bon','Échangez vos points','Recyclez vos déchets. Gagnez des récompenses.'],
+ar:['ابدأ','كيف تعمل النقاط','نظّف موقع نفايات واحدًا معتمدًا','ارفع إثبات قبل وبعد','أكمل 5 عمليات تنظيف معتمدة','بلوغ أول محطة مكافأة','افتح قسيمة','اختر عرضًا متاحًا من الشركاء','نقطة حتى أول قسيمة','استبدل نقاطك','أعد تدوير نفاياتك. واحصل على مكافآت.']
+};
+for(const l in X)T[l].push(...X[l]);
+const state={splash:true,lang:'en',tab:'home',points:20,cleaned:2,kg:6,spot:null,before:null,after:null,ack:false,verify:null,sheet:null,redeemed:null,oFilter:'all',oSel:0};
+const t=k=>{const L=T[state.lang]||T.en;const i=K.indexOf(k);return (L[i]||T.en[i]||k)};
+const $=s=>document.querySelector(s);
+const ic={
+ home:'<path d="M3 11l9-8 9 8M5 10v10h14V10"/>',
+ clean:'<path d="M5 21h14M8 21l-1-9h10l-1 9M9 12V6a3 3 0 016 0v6"/>',
+ gift:'<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 13h18M12 8c-3 0-5-1-5-3s3-3 5 3c2-6 5-5 5-3s-2 3-5 3z"/>',
+ pin:'<path d="M12 22s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
+ shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+ cam:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+ pts:'<circle cx="12" cy="12" r="9"/><path d="M8 13c0-4 4-6 8-6 0 4-2 8-6 8-1 0-1.6-.3-2-.8z"/>',
+ glove:'<path d="M7 21v-6L5 9a1.5 1.5 0 013-1v-3a1.5 1.5 0 013 0V4a1.5 1.5 0 013 0v1a1.5 1.5 0 013 0v7c0 4-1 6-3 7v2z"/>',
+ check:'<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/>',
+ load:'<path d="M12 3a9 9 0 019 9" />',
+ dot:'<circle cx="12" cy="12" r="8"/>',
+ phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/>',
+ trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14"/>',
+ upload:'<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>'
+};
+const svg=(n,extra='')=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${ic[n]}</svg>`;
+
+const SPOTS=[
+ {id:1,name:'Market Road, near bus stop',d:'0.4 km',size:'Medium pile',pts:10},
+ {id:2,name:'Canal footpath, Ward 12',d:'0.9 km',size:'Small pile',pts:10},
+ {id:3,name:'School lane corner',d:'1.3 km',size:'Large pile',pts:10}
+];
+const REWARDS=[
+ {id:1,name:'GreenBasket Grocers',off:'₹50 off on ₹399+',cost:50},
+ {id:2,name:'Brew & Bean Cafe',off:'Free filter coffee',cost:50},
+ {id:3,name:'CityCycle Rentals',off:'1 free hour',cost:100},
+ {id:4,name:'Booknook Store',off:'₹100 off any book',cost:150}
+];
+const OFFICES=[
+ {id:1,name:'Ward 12 Municipal Office',type:'ward',d:0.7,hrs:'Mon–Sat 10:00–17:30',ph:'1800-000-0112',x:150,y:105,open:true},
+ {id:2,name:'Sanitation & Solid Waste Dept.',type:'sanitation',d:1.6,hrs:'Mon–Fri 09:30–17:00',ph:'1800-000-0220',x:235,y:60,open:true},
+ {id:3,name:'Dry Waste Collection Centre',type:'recycle',d:2.4,hrs:'Daily 08:00–16:00',ph:'1800-000-0331',x:70,y:55,open:true},
+ {id:4,name:'Zonal Commissioner Office',type:'ward',d:3.9,hrs:'Mon–Fri 10:00–17:00',ph:'1800-000-0001',x:255,y:140,open:false}
+];
+
+function toast(msg){const el=$('#toast');el.textContent=msg;el.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>el.hidden=true,2400)}
+function samplePhoto(kind){
+  const bits=kind==='before'
+   ?'<rect width="200" height="200" fill="#a77858"/><rect y="130" width="200" height="70" fill="#7a4d31"/><g fill="#41271a"><rect x="40" y="110" width="30" height="22" rx="4"/><rect x="85" y="120" width="40" height="16" rx="4" transform="rotate(-8 105 128)"/><circle cx="140" cy="125" r="13"/><rect x="60" y="140" width="22" height="26" rx="3" transform="rotate(14 70 150)"/></g><g fill="#fffefd"><rect x="105" y="108" width="24" height="14" rx="2" transform="rotate(12 117 115)"/><circle cx="52" cy="152" r="7"/></g>'
+   :'<rect width="200" height="200" fill="#dac3af"/><rect y="130" width="200" height="70" fill="#a77858"/><path d="M30 130c10-20 20-20 30 0M150 130c8-14 18-14 26 0" stroke="#5c3924" stroke-width="3" fill="none"/>';
+  return 'data:image/svg+xml;utf8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">${bits}</svg>`);
+}
+function nav(){
+  const tabs=[['home','home'],['report','clean'],['rewards','gift'],['offices','pin']];
+  $('#nav').innerHTML=tabs.map(([k,i])=>`<button data-tab="${k}" ${state.tab===k?'aria-current="page"':''}>${svg(i)}<span>${t(k)}</span></button>`).join('');
+}
+function home(){
+  return `
+  <section class="hero">
+    <div style="display:flex;align-items:center;gap:12px"><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px"><div class="tag">${t('welcome')} · ${t('tagline')}</div>
+    <div class="pts"><b>${state.points}</b><span>${t('points')}</span></div></div><div style="width:76px;flex:none">${binArt('#fffefd','#5c3924','#dac3af')}</div></div>
+    <div class="stats"><div><b>${state.cleaned}</b><span>${t('spots')}</span></div><div><b>${state.kg}</b><span>${t('kg')}</span></div><div><b>${state.cleaned}</b><span>${t('verified')}</span></div></div>
+  </section>
+  <section class="trust">${svg('shield')}<div><h3>${t('trustTitle')}</h3><p>${t('trustBody')}</p><button class="link" data-act="verifyinfo">${t('howVerified')}</button></div></section>
+  ${ptsys()}
+  <ol class="steps">
+    <li><i>${svg('cam')}</i>${t('s1')}</li><li><i>${svg('glove')}</i>${t('s2')}</li><li><i>${svg('upload')}</i>${t('s3')}</li><li><i>${svg('pts')}</i>${t('s4')}</li>
+  </ol>
+  <section class="list"><h2>${t('nearby')}</h2>
+  ${SPOTS.map(s=>`<div class="row"><div class="thumb">${svg('trash')}</div><div class="grow"><h3>${s.name}</h3><div class="sm">${s.d} ${t('away')} · ${s.size}</div></div><div style="text-align:end"><span class="pill dark">+${s.pts}</span><br><button class="btn small" style="margin-top:6px" data-act="spot" data-id="${s.id}">${t('start')}</button></div></div>`).join('')}
+  </section>`;
+}
+function report(){
+  const v=state.verify;
+  if(v&&v.done){return `<div class="win">${svg('check','style="width:44px;height:44px"')}<b>+${v.pts}</b><div>${t('approved')}</div><button class="btn ghost small" style="margin-top:8px" data-act="reset">${t('start')}</button></div>
+   <div class="photos"><div class="drop"><img alt="${t('before')}" src="${state.before}"><span class="lab">${t('before')}</span></div><div class="drop"><img alt="${t('after')}" src="${state.after}"><span class="lab">${t('after')}</span></div></div>`}
+  if(v){return `<h2>${t('submit')}</h2><ul class="checks">${v.steps.map(s=>`<li class="${s.st}">${svg(s.st==='done'?'check':s.st==='run'?'load':'dot')}<span>${s.label}</span></li>`).join('')}</ul>`}
+  const spot=state.spot||SPOTS[0];
+  const ready=state.before&&state.after&&state.ack;
+  return `
+  <h2>${spot.name}</h2>
+  <div class="sm">${spot.d} ${t('away')} · ${spot.size} · +${spot.pts} ${t('points')}</div>
+  <div class="photos">
+    <div class="drop">${state.before?`<img alt="${t('before')}" src="${state.before}"><span class="lab">${t('before')}</span>`:`${svg('cam')}<b>${t('before')}</b><input class="sr" type="file" id="f-before" accept="image/*" capture="environment" hidden><button class="btn small" data-act="pick" data-k="before">${t('addPhoto')}</button><button class="link" data-act="sample" data-k="before">Sample</button>`}</div>
+    <div class="drop ${state.before&&state.ack?'':'off'}">${state.after?`<img alt="${t('after')}" src="${state.after}"><span class="lab">${t('after')}</span>`:`${svg('cam')}<b>${t('after')}</b><input type="file" id="f-after" accept="image/*" capture="environment" hidden><button class="btn small" data-act="pick" data-k="after" ${state.before&&state.ack?'':'disabled'}>${t('addPhoto')}</button><button class="link" data-act="sample" data-k="after" ${state.before&&state.ack?'':'disabled'}>Sample</button>`}</div>
+  </div>
+  <div class="safety">${svg('glove')}<div><h3>${t('safety')}</h3><p>${t('safetyText')}</p></div></div>
+  <label class="chk"><input type="checkbox" id="ack" ${state.ack?'checked':''}>${t('ack')}</label>
+  <button class="btn" data-act="submit" ${ready?'':'disabled'}>${t('submit')}</button>`;
+}
+function rewards(){
+  return `<section class="rbanner"><div style="flex:1;min-width:0"><h2>${t('redeemTitle')}</h2><div class="pts" style="margin-top:8px"><b style="font-size:40px">${state.points}</b><span>${t('points')}</span></div></div><div style="width:92px;flex:none">${binArt('#fffefd','#5c3924','#dac3af')}</div></section>
+  ${ptsys()}
+  <h2>${t('partner')}</h2>
+  <div class="list">${REWARDS.map(r=>{const ok=state.points>=r.cost;return `<div class="row"><div class="thumb">${svg('gift')}</div><div class="grow"><h3>${r.name}</h3><div class="sm">${r.off}</div><span class="pill">${svg('shield')}${t('partner')}</span></div><div style="text-align:end"><b>${r.cost}</b> <span class="sm">${t('cost')}</span><br><button class="btn small" style="margin-top:6px" data-act="redeem" data-id="${r.id}" ${ok?'':'disabled'}>${ok?t('redeem'):t('locked')}</button></div></div>`}).join('')}</div>
+  <div class="note">${t('sample')}</div>`;
+}
+function offices(){
+  const f=state.oFilter;
+  const list=OFFICES.filter(o=>f==='all'||o.type===f).sort((a,b)=>a.d-b.d);
+  const sel=list.find(o=>o.id===state.oSel)||list[0];
+  const chips=[['all','All'],['ward','Ward'],['sanitation','Sanitation'],['recycle','Recycling']];
+  return `<h2>${t('nearOffices')}</h2>
+  <div class="chips">${chips.map(([k,l])=>`<button class="chip" data-act="ofilter" data-k="${k}" aria-pressed="${f===k}">${l}</button>`).join('')}</div>
+  <svg class="map" viewBox="0 0 300 180" role="img" aria-label="Map of nearby offices">
+    <rect width="300" height="180" fill="#f8f2ec"/>
+    <path d="M0 120H300M0 60H300M100 0V180M200 0V180" stroke="#dac3af" stroke-width="10"/>
+    <path d="M0 120H300M0 60H300M100 0V180M200 0V180" stroke="#fffefd" stroke-width="6"/>
+    ${list.map(o=>`<g data-act="osel" data-id="${o.id}" style="cursor:pointer"><circle cx="${o.x}" cy="${o.y}" r="${sel&&sel.id===o.id?11:8}" fill="${sel&&sel.id===o.id?'#5c3924':'#a77858'}" stroke="#fffefd" stroke-width="2.5"/><circle cx="${o.x}" cy="${o.y}" r="3" fill="#fffefd"/></g>`).join('')}
+    <circle cx="150" cy="150" r="14" fill="#5c3924" fill-opacity=".2"/><circle cx="150" cy="150" r="6" fill="#2b190d" stroke="#fffefd" stroke-width="2"/>
+  </svg>
+  <div class="list">${list.map(o=>`<div class="row" style="${sel&&sel.id===o.id?'border-color:#5c3924;border-width:2px':''}"><div class="thumb">${svg('pin')}</div><div class="grow"><h3>${o.name}</h3><div class="sm">${o.d} km ${t('away')} · <b>${o.open?t('open'):t('closed')}</b></div><div class="sm">${o.hrs}</div><div class="sm" style="user-select:all">${o.ph}</div></div><div style="display:flex;flex-direction:column;gap:6px"><a class="btn small" style="text-decoration:none;text-align:center" href="https://www.google.com/maps/search/${encodeURIComponent(o.name)}" target="_blank" rel="noopener">${t('directions')}</a><button class="btn ghost small" data-act="copy" data-v="${o.ph}">${t('call')}</button></div></div>`).join('')}</div>
+  <div class="note">${t('sample')}</div>`;
+}
+function binArt(c1,c2,c3){
+  const arrows=[0,120,240].map(r=>`<g transform="rotate(${r})"><path d="M-13 11H7"/><path d="M3 4l9 7-9 7"/></g>`).join('');
+  return `<svg viewBox="0 0 160 190" aria-hidden="true" style="display:block;width:100%;height:auto"><g transform="rotate(-14 56 40)"><rect x="40" y="22" width="30" height="20" rx="5" fill="${c3}"/></g><g transform="rotate(18 100 32)"><rect x="88" y="16" width="24" height="30" rx="5" fill="${c3}"/></g><circle cx="76" cy="14" r="9" fill="${c3}"/><rect x="30" y="62" width="100" height="14" rx="7" fill="${c1}"/><rect x="62" y="54" width="36" height="10" rx="5" fill="${c1}"/><path d="M38 80h84l-8 96a8 8 0 01-8 7H54a8 8 0 01-8-7z" fill="${c1}"/><g transform="translate(80 128)" fill="none" stroke="${c2}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${arrows}</g></svg>`;
+}
+function ptsys(){
+  const pct=Math.min(100,Math.round(state.points/50*100));
+  const left=Math.max(0,50-state.points);
+  return `<section class="ptsys"><h2>${t('pointsSystem')}</h2>
+  <div class="row"><div class="thumb">${svg('trash')}</div><div class="grow"><h3>${t('pSpot')}</h3><div class="sm">${t('pSpotSub')}</div></div><span class="v">+10</span></div>
+  <div class="row"><div class="thumb">${svg('pts')}</div><div class="grow"><h3>${t('pFive')}</h3><div class="sm">${t('pFiveSub')}</div></div><span class="v">50</span></div>
+  <div class="row" style="border-bottom:0"><div class="thumb">${svg('gift')}</div><div class="grow"><h3>${t('pCoupon')}</h3><div class="sm">${t('pCouponSub')}</div></div><span class="pill dark">50 ${t('cost')}</span></div>
+  <div class="foot"><div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="${Math.min(50,state.points)}"><i style="width:${pct}%"></i></div><div class="sm">${left>0?`${left} ${t('toCoupon')}`:`✓ ${t('pCoupon')}`}</div></div></section>`;
+}
+function splashRender(){
+  const L=LANGS.find(l=>l[0]===state.lang);
+  $('#splash').innerHTML=state.splash?`<div class="splash"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div class="brand">EcoRewards</div><button class="langbtn" data-act="langopen">${svg('home').replace(/<path[^>]*>/,'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>')}${L[1]}</button></div><h1>${t('splashTitle')}</h1><div class="art">${binArt('#5c3924','#fffefd','#a77858')}</div><button class="btn light" data-act="begin">${t('getStarted')}</button></div>`:'';
+}
+function render(){
+  const phone=$('#phone');phone.dir=RTL.includes(state.lang)?'rtl':'ltr';phone.lang=state.lang;
+  const L=LANGS.find(l=>l[0]===state.lang);$('#langLabel').textContent=L[1];
+  $('#introTag').textContent=t('tagline');
+  const keep=$('#main').scrollTop;
+  $('#main').innerHTML=({home,report,rewards,offices})[state.tab]();
+  nav();splashRender();
+  $('#main').scrollTop=keep;
+  const ack=$('#ack');if(ack)ack.onchange=e=>{state.ack=e.target.checked;render()};
+}
+function sheet(html){ $('#overlay').innerHTML=html?`<div class="sheetbg" data-act="close"><div class="sheet" role="dialog" aria-modal="true" onclick="event.stopPropagation()">${html}</div></div>`:'' }
+function langSheet(){
+  sheet(`<div class="top"><h2>${t('language')}</h2><button class="x" data-act="close" aria-label="${t('close')}">×</button></div>
+  <div class="langs">${LANGS.map(l=>`<button data-act="lang" data-k="${l[0]}" aria-pressed="${state.lang===l[0]}"><b>${l[1]}</b><small>${l[2]}${T[l[0]]?'':' · English UI'}</small></button>`).join('')}</div>
+  <div class="note">${LANGS.length} languages. Full translation is live for ${Object.keys(T).length}; the rest show English until their translations are added.</div>`);
+}
+function runVerify(){
+  const labels=['GPS location matches the dump spot','Photo time is within 2 hours of your claim','Before and after photos show the same place, now clear','Municipal volunteer review'];
+  state.verify={done:false,pts:(state.spot||SPOTS[0]).pts,steps:labels.map(l=>({label:l,st:'wait'}))};
+  render();
+  labels.forEach((_,i)=>{
+    setTimeout(()=>{state.verify.steps[i].st='run';if(state.tab==='report')render()},i*1100);
+    setTimeout(()=>{state.verify.steps[i].st='done';if(i===labels.length-1){state.verify.done=true;state.points+=state.verify.pts;state.cleaned++;state.kg+=3;}if(state.tab==='report')render()},i*1100+900);
+  });
+}
+document.addEventListener('click',e=>{
+  const tb=e.target.closest('[data-tab]');if(tb){state.tab=tb.dataset.tab;render();return}
+  if(e.target.closest('#langBtn')){langSheet();return}
+  const a=e.target.closest('[data-act]');if(!a)return;
+  const act=a.dataset.act,k=a.dataset.k,id=+a.dataset.id;
+  if(act==='close'){sheet('');return}
+  if(act==='begin'){state.splash=false;render();return}
+  if(act==='langopen'){langSheet();return}
+  if(act==='lang'){state.lang=k;sheet('');render();return}
+  if(act==='spot'){state.spot=SPOTS.find(s=>s.id===id);state.before=state.after=null;state.ack=false;state.verify=null;state.tab='report';render();return}
+  if(act==='sample'){state[k]=samplePhoto(k);render();return}
+  if(act==='pick'){$('#f-'+k).click();return}
+  if(act==='submit'){runVerify();return}
+  if(act==='reset'){state.before=state.after=null;state.ack=false;state.verify=null;state.tab='home';render();return}
+  if(act==='verifyinfo'){sheet(`<div class="top"><h2>${t('howVerified')}</h2><button class="x" data-act="close" aria-label="${t('close')}">×</button></div>
+   <ul class="checks"><li class="done">${svg('check')}<span><b>Location</b><br>Photos must be taken at the reported spot (GPS match).</span></li><li class="done">${svg('check')}<span><b>Time</b><br>Before and after photos are time-stamped by the app. Gallery uploads are rejected.</span></li><li class="done">${svg('check')}<span><b>Visual check</b><br>Automatic comparison confirms the litter is gone.</span></li><li class="done">${svg('check')}<span><b>Human review</b><br>A municipal volunteer approves, and points are issued only after approval.</span></li><li class="done">${svg('check')}<span><b>Privacy</b><br>Faces and number plates are blurred. Your exact location is never shown publicly.</span></li></ul>`);return}
+  if(act==='redeem'){const r=REWARDS.find(x=>x.id===id);state.points-=r.cost;render();sheet(`<div class="top"><h2>${r.name}</h2><button class="x" data-act="close" aria-label="${t('close')}">×</button></div><div class="sm">${r.off}</div><div class="sm">${t('yourCode')}</div><div class="code">ECO-${(r.id*7919+state.points).toString(36).toUpperCase().padStart(5,'7')}</div><div class="note">${t('sample')}</div>`);return}
+  if(act==='ofilter'){state.oFilter=k;render();return}
+  if(act==='osel'){state.oSel=id;render();return}
+  if(act==='copy'){const v=a.dataset.v;const ok=()=>toast(v);try{navigator.clipboard.writeText(v).then(ok,ok)}catch(_){ok()}return}
+});
+document.addEventListener('change',e=>{
+  if(e.target.matches('input[type=file]')){
+    const f=e.target.files[0];if(!f)return;const k=e.target.id.replace('f-','');
+    const r=new FileReader();r.onload=()=>{state[k]=r.result;render()};r.readAsDataURL(f);
+  }
+});
+render();
+</script>
+</body>
+</html>
